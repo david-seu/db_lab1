@@ -60,8 +60,8 @@ create or alter procedure populate_table_authors (@rows int) as
     while @rows > 0 begin
         declare @rows_string varchar(max)
         set @rows_string = cast(@rows as varchar(50))
-        insert into authors (author_id, full_name, username, email, role, salary, password, project_id, bio) values
-                            (@rows, 'name' + @rows_string , 'username'+ @rows_string, @rows_string+'@gmail.com', 'role', floor(rand() * (10000 - 1001 + 1) + 1001), 'password', floor(rand()*5+1), 'bio')
+        insert into authors (author_id, full_name, username, email, role, salary, password, project_id, bio, cnp) values
+                            (@rows, 'name' + @rows_string , 'username'+ @rows_string, @rows_string+'@gmail.com', 'role', floor(rand() * (10000 - 1001 + 1) + 1001), 'password', floor(rand()*5+1), 'bio', @rows+100)
         set @rows = @rows - 1
     end;
 
@@ -69,8 +69,8 @@ create or alter procedure populate_table_notes (@rows int) as
     while @rows > 0 begin
         declare @rows_string varchar(max)
         set @rows_string = cast(@rows as varchar(50))
-        insert into notes (note_id, title, tags, archive, creation_date, resource_id, content) values
-                            (@rows, 'note_title'+@rows_string, 'tags', 0, getdate(), (select top 1 resource_id from resources order by newid()), 'resource_content_'+@rows_string)
+        insert into notes (note_id, title, tags, archive, creation_date, resource_id, content, size) values
+                            (@rows, 'note_title'+@rows_string, 'tags', 0, getdate(), (select top 1 resource_id from resources order by newid()), 'resource_content_'+@rows_string, floor(rand() * (9900) + 100))
         set @rows = @rows - 1
     end;
 

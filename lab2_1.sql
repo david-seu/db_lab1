@@ -224,6 +224,52 @@ select full_name
 from authors
 where salary = (select MAX(salary) from authors);
 
+--insert data into the tables
+
+create table financialeducation
+(
+    fk1 int not null ,
+    fk2 int not null,
+    primary key (fk1, fk2),
+    c1 varchar(100),
+    c2 varchar(100),
+    c3 int,
+    c4 int,
+    c5 varchar(2)
+)
+
+drop table financialeducation
+
+
+
+insert into financialeducation (fk1, fk2, c1, c2, c3, c4, c5) values
+(1,3,'Rich Dad poor Dad', 'Robert Kiyosaki', 100,5,'AE'),
+(4,3,'The intelligent invsetor', 'Benjamin Graham', 80, 50, 'DS'),
+(1,4,'The richest Man in Babylon', 'George S. Clason', 50, 10, 'CD'),
+(3,4,'Stop acting rich','Thomas Stanley',30,30,'FG'),
+(1,2,'The millionare next door','Thomas Stanley',20,10,'GF'),
+(1,1,'Think and grow rich','Napolean Hill',40,20,'TH'),
+(2,3,'The riches engineer','Abhishek Kumar',10,15,'YH'),
+(3,2,'From The Rat Race to Financial Freedom','Manoj Arora',15,40,'RG'),
+(4,4,'The Simplest Path to Wealth','J.L. Collins',20,15,'FN')
+go
+
+select c2, sum(c3) as totalc3, avg(c3) as avgc3
+from financialeducation
+where c3 <= 30 and c5 like '%G%'
+group by c2
+having sum(c4) > 30
+go
+
+select *
+from
+(select fk1,fk2,c3
+ from financialeducation where fk1 >= financialeducation.fk2 and c3 > 20) r1
+inner join
+(select fk1, fk2, c4, c5 from financialeducation where c3 < 50 and c5 like '%H%') r2
+on r1.fk1 = r2.fk1 and r1.fk2 = r2.fk2
+
+
 
 
 
